@@ -1,0 +1,278 @@
+Retail Demand Forecasting & Inventory Replenishment
+Decision Memo
+1. Business Goal & KPIs
+Objective
+
+The objective of this project is to reduce stockouts while controlling excess inventory and holding costs by implementing a data-driven demand forecasting and replenishment system at the SKU–Store level.
+
+Retail businesses often struggle with:
+
+Stockouts → lost sales and poor customer experience
+
+Overstock → tied-up working capital and higher holding costs
+
+This project proposes a forecasting-driven replenishment framework to optimize inventory levels.
+
+North Star Metric
+
+Fill Rate (Service Level)
+
+Fill Rate = Total Demand / Demand Fulfilled
+	​
+
+
+Improving fill rate directly reduces lost sales and improves product availability.
+
+Supporting KPIs
+
+The following metrics were tracked to evaluate the system:
+
+KPI	Purpose
+Forecast Accuracy (MAPE / WAPE)	Measures demand prediction accuracy
+Stockout Rate	% of days SKU inventory reaches zero
+Fill Rate	Ability to meet customer demand
+Days of Inventory on Hand (DOH)	Inventory coverage duration
+Inventory Turns	Inventory efficiency proxy
+Overstock Rate	% of SKUs with DOH above threshold
+Holding Cost Proxy	Inventory value × holding rate
+Lost Sales Proxy	True demand – actual sales
+Safety Stock Level	Buffer inventory required
+Reorder Point	Inventory level triggering replenishment
+2. Data & Methodology
+Data Sources
+
+The system integrates multiple operational datasets:
+
+Dataset	Description
+Stores	Store region, size, and tier
+Products	SKU category, price, cost, shelf life, MOQ
+Sales Daily	SKU-store level daily demand and revenue
+Inventory Daily	Opening and closing inventory levels
+Purchase Orders	Lead times and historical orders
+Calendar	Promotions, holidays, weekday patterns
+
+The dataset contained approximately:
+
+342k sales records
+
+341k inventory records
+
+90 SKUs across 18 stores
+
+ETL Pipeline
+
+The ETL pipeline performs:
+
+Data ingestion from source URLs
+
+Standardization of column formats
+
+Cleaning and missing value handling
+
+Joining product and store attributes
+
+Feature engineering for inventory and demand metrics
+
+Three curated datasets were created:
+
+Dataset	Purpose
+fact_sales_store_sku_daily	Core demand dataset
+fact_inventory_store_sku_daily	Inventory tracking
+replenishment_inputs_store_sku	Inputs for reorder calculations
+Forecasting Methodology
+
+Two models were implemented:
+
+1. Baseline Model (Seasonal Naive)
+
+Forecast = demand from the same day in the previous week.
+
+Captures weekly demand seasonality.
+
+2. Regression Forecast Model
+
+Features used:
+
+Promo flag
+
+Holiday flag
+
+Day of week
+
+Month
+
+Lag-1 demand
+
+Lag-7 demand
+
+Rolling mean demand
+
+Rolling demand volatility
+
+The regression model captures:
+
+seasonality
+
+promotions
+
+demand trends
+
+demand volatility
+
+Forecast horizon:
+
+28 days (4 weeks)
+
+3. Key Insights
+
+Analysis of demand and inventory patterns produced the following insights:
+
+1. Strong weekly seasonality
+
+Demand peaks typically occur on weekends, while mid-week demand is lower.
+
+2. Promotions significantly increase demand
+
+Promo periods show meaningful uplift in average units sold, indicating strong price sensitivity.
+
+3. Certain SKUs dominate volume and revenue
+
+A small set of SKUs contribute disproportionately to total sales, indicating a Pareto distribution of demand.
+
+4. Stockouts are concentrated in specific stores
+
+A few store locations account for most stockout occurrences, suggesting local demand forecasting improvements are needed.
+
+5. Demand volatility varies by category
+
+Categories like fresh and produce show higher variability, requiring higher safety stock.
+
+6. Overstock risk occurs for slow-moving SKUs
+
+Products with long shelf life and low demand accumulate excess inventory.
+
+7. Lead time variability drives stockout risk
+
+SKUs with longer supplier lead times require significantly higher safety stock levels.
+
+4. Forecast Performance
+
+Two forecasting approaches were compared:
+
+Model	Strengths
+Baseline	Simple, captures weekly patterns
+Regression	Incorporates promotions, trends, and volatility
+
+Results show that the regression model generally performs better in categories affected by promotions and holidays.
+
+The final system keeps both models for comparison and selects the better performing one based on WAPE.
+
+5. Replenishment Policy
+
+The replenishment framework uses a Continuous Review (R,Q) policy.
+
+Reorder Point Formula
+
+ROP = Demand avg ×LeadTime + SafetyStock
+
+SafetyStock = Z × DemandStdDev × LeadTime
+	​
+Where Z corresponds to the service level target by category.
+
+Example targets:
+
+Category	Service Level
+Fresh / Produce	98%
+Dairy	97%
+Frozen	96%
+Beverages	95%
+Order Quantity
+OrderQty = OrderUpToLevel − CurrentInventory
+
+Constraints applied:
+
+Minimum Order Quantity (MOQ)
+
+Shelf-life limits
+
+Demand forecasts
+
+Example Replenishment Output
+
+The system generates:
+
+Recommended PO list
+
+Replenishment policy table
+
+Top stockout risk SKUs
+
+Top overstock risk SKUs
+
+These outputs help planners prioritize inventory actions.
+
+6. 30-Day Impact Estimate
+
+A simulation model estimated the business impact of applying the proposed replenishment system.
+
+Three scenarios were evaluated:
+
+Scenario	Description
+Conservative	Partial adoption
+Base Case	Recommended policy
+Aggressive	Higher service levels
+
+Estimated benefits include:
+
+Reduced lost sales
+
+Improved product availability
+
+Better inventory balance
+
+The base scenario indicates measurable improvements in fill rate and reduced stockout risk.
+
+7. Risks & Limitations
+1. Forecast uncertainty
+
+Demand volatility and unexpected demand spikes may reduce forecast accuracy.
+
+2. Supplier variability
+
+Lead times may fluctuate due to supplier delays.
+
+3. Promotion planning changes
+
+Unplanned promotions could distort demand forecasts.
+
+4. Data limitations
+
+Historical data may not capture structural demand changes.
+
+Next Steps
+
+To further improve the system:
+
+Implement automated daily forecast updates
+
+Introduce advanced forecasting models (Prophet / XGBoost)
+
+Integrate real-time inventory monitoring
+
+Incorporate store clustering for demand similarity
+
+Connect replenishment system to automatic purchase order generation
+
+Conclusion
+
+The proposed forecasting and replenishment framework provides a scalable approach to improving retail inventory performance.
+
+By integrating demand forecasting with inventory policies, the system enables:
+
+better product availability
+
+lower lost sales
+
+more efficient inventory management
+
+The approach supports data-driven inventory decisions at the SKU–Store level, improving both operational efficiency and customer experience.
