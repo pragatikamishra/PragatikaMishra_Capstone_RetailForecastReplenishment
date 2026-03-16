@@ -1,0 +1,5 @@
+category,stockout_rate,lost_sales_proxy_units,stores_contributing_most,avg_demand_volatility_stddev,hypothesis,follow_up_experiment_or_data,evidence_used
+Beverages,0.9215376513954713,516956,"ST001, ST002, ST003, ST004, ST005",4.907421382916168,Lead time is too long relative to demand velocity.,Compare lead_time_days vs projected_days_to_zero by SKU-store.,inventory_risk_segmented.csv
+Beverages,0.9215376513954713,516956,"ST001, ST002, ST003, ST004, ST005",4.907421382916168,Promo and holiday demand spikes are not fully covered.,Compare forecast error and stockout_censored_units on promo days.,promo_holiday_effect.csv
+Grocery,0.9202376250658241,748411,"ST001, ST002, ST003, ST004, ST005",8.247888685615912,Lead time is too long relative to demand velocity.,Compare lead_time_days vs projected_days_to_zero by SKU-store.,inventory_risk_segmented.csv
+Grocery,0.9202376250658241,748411,"ST001, ST002, ST003, ST004, ST005",8.247888685615912,Promo and holiday demand spikes are not fully covered.,Compare forecast error and stockout_censored_units on promo days.,promo_holiday_effect.csv

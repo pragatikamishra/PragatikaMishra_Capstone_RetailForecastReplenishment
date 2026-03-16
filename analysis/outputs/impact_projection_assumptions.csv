@@ -1,0 +1,9 @@
+scenario,assumption_type,assumption_value,explanation
+Best Case,Demand,-5%,Demand slightly below forecast.
+Best Case,Lead Time,-10%,Orders land slightly faster.
+Base Case,Demand,0%,Demand follows forecast.
+Base Case,Lead Time,0%,Lead time stays normal.
+Worst Case,Demand,+10%,Demand exceeds forecast.
+Worst Case,Lead Time,+20%,Orders land later.
+All,Holding Cost,2% monthly,Holding cost proxy = ending inventory value × 2%.
+All,Lost Sales Proxy,Unmet units × price,Unmet units are treated as lost sales.

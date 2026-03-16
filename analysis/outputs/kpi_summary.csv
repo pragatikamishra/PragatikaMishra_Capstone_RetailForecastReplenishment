@@ -1,0 +1,2 @@
+total_units_sold,total_true_demand_units,stockout_censored_units,total_revenue,total_margin_proxy,stockout_rate,fill_rate_proxy,avg_days_of_inventory_on_hand,overstock_rate,inventory_value_proxy,holding_cost_proxy,lost_sales_proxy_units,baseline_wape_mean,regression_wape_mean
+206993,2666011,2460747,54451180.89999999,16995587.53,0.9202592007489322,0.07699293063682033,0.6193411289567609,0.0,28948.879999999997,578.9775999999999,2460747,0.8009729967019902,0.5887055159737579

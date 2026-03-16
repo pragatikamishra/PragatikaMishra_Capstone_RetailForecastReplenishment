@@ -1,0 +1,2 @@
+baseline_mape_mean,baseline_wape_mean,regression_mape_mean,regression_wape_mean,better_model_by_wape
+1.2372137656059696,0.8009729967019902,0.7612487494907062,0.5887055159737579,regression

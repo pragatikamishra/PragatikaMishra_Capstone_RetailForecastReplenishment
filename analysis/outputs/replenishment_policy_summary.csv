@@ -1,0 +1,2 @@
+total_store_sku_rows,rows_triggering_reorder,rows_with_positive_recommended_order,total_recommended_units,total_recommended_cost_value,avg_service_level_target,avg_safety_stock,avg_reorder_point
+1620,1619,1619,193876.0,36158915.69,0.951,23.15516706166019,78.94868425301821
