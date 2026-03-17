@@ -67,18 +67,42 @@ def demand_trend_outputs(sales: pd.DataFrame):
     daily_trend["true_demand_7d_ma"] = daily_trend["true_demand_units"].rolling(7, min_periods=1).mean()
     daily_trend.to_csv(OUTPUT_DIR / "demand_trend_daily.csv", index=False)
 
+    # weekly_pattern = (
+    #     sales.groupby("day_of_week", as_index=False)
+    #     .agg(
+    #         avg_units_sold=("units_sold", "mean"),
+    #         avg_true_demand=("true_demand_units", "mean"),
+    #         avg_revenue=("revenue", "mean"),
+    #     )
+    # )
+
+    # dow_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    # weekly_pattern["day_of_week"] = pd.Categorical(weekly_pattern["day_of_week"], dow_order, ordered=True)
+    # weekly_pattern = weekly_pattern.sort_values("day_of_week")
+    # weekly_pattern.to_csv(OUTPUT_DIR / "weekly_pattern.csv", index=False)
+
+
     weekly_pattern = (
-        sales.groupby("day_of_week", as_index=False)
+        sales
+        .assign(day_of_week=sales["date"].dt.day_name())
+        .groupby("day_of_week", as_index=False)
         .agg(
-            avg_units_sold=("units_sold", "mean"),
+         avg_units_sold=("units_sold", "mean"),
             avg_true_demand=("true_demand_units", "mean"),
-            avg_revenue=("revenue", "mean"),
+            avg_revenue=("revenue", "mean")
         )
     )
 
-    dow_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    weekly_pattern["day_of_week"] = pd.Categorical(weekly_pattern["day_of_week"], dow_order, ordered=True)
+    # reorder days
+    order = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    weekly_pattern["day_of_week"] = pd.Categorical(
+    weekly_pattern["day_of_week"],
+    categories=order,
+    ordered=True
+    )
+
     weekly_pattern = weekly_pattern.sort_values("day_of_week")
+
     weekly_pattern.to_csv(OUTPUT_DIR / "weekly_pattern.csv", index=False)
 
     promo_holiday_effect = (
@@ -90,6 +114,7 @@ def demand_trend_outputs(sales: pd.DataFrame):
             observations=("sku_id", "count"),
         )
     )
+
     promo_holiday_effect.to_csv(OUTPUT_DIR / "promo_holiday_effect.csv", index=False)
 
     top_skus_volume = (
