@@ -22,7 +22,8 @@ PragatikaMishra_Capstone_RetailForecastReplenishment/
 │
 └── final_story/
     └── final_memo.pdf\
-
+# How to run the code 
+Run main.py to get the results in data folder ans analysis-> output folder
 
 # project overview + north star
 
@@ -131,6 +132,98 @@ Feature engineering
 Export 3 curated datasets
 
 
-# How to Run ETL
-```bash
-python etl/etl_pipeline.py
+
+## Analysis Output Files (analysis/output/)
+🔹 1. Demand Understanding
+demand_summary_by_sku_store.csv
+
+    Avg demand, variability, and demand patterns at SKU-store level
+
+demand_summary_by_category.csv
+
+    Aggregated demand trends by product category
+
+🔹 2. Forecasting Outputs
+forecast_metrics_overall.csv
+
+    Overall forecast accuracy (WAPE / MAPE)
+
+forecast_metrics_store_sku.csv
+
+    Forecast accuracy at SKU-store level
+
+forecast_vs_actual_store_sku.csv
+
+    Day-level comparison of forecast vs actual demand
+
+🔹 3. Feature Engineering (optional but useful)
+time_features_enriched_sales.csv
+
+    Sales dataset enriched with lag features and rolling averages
+
+🔹 4. Inventory Risk Analysis
+inventory_risk_segmented.csv
+
+    SKU-store classified into:
+
+    Stockout Risk
+
+        Healthy
+
+        Overstock Risk
+
+inventory_risk_summary.csv
+
+    Aggregated risk distribution (counts, percentages)
+
+🔹 5. Weekly / Seasonal Analysis
+weekly_demand_pattern.csv
+
+    Demand aggregated by day of week
+
+promo_holiday_impact.csv
+
+    Impact of promotions and holidays on demand
+
+🔹 6. Replenishment Inputs (from ETL, used in analysis)
+replenishment_inputs_store_sku.csv
+
+    Demand, lead time, safety stock, reorder point
+
+🔹 7. Replenishment Outputs (Part D)
+recommended_po_list_next_cycle.csv
+
+    Final recommended purchase orders
+
+replenishment_policy_store_sku.csv
+
+    Policy details:
+
+        Safety stock
+
+        Reorder point
+
+        Order quantity
+
+🔹 8. Impact Estimation (Part E)
+impact_projection_summary_by_scenario.csv
+
+    Business impact across:
+
+         Base case
+
+         Best case
+
+         Worst case
+
+    Includes:
+
+        Lost sales avoided
+
+        Fill rate improvement
+
+        Stockout reduction
+
+impact_detailed_store_sku.csv
+
+    SKU-store level impact breakdown
